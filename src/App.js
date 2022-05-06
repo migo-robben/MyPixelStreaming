@@ -1,25 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// libs
+import PixelStreaming from 'pixel-streaming'
+
+export default function Player(props) {
+    const refPixelStreaming = React.useRef(null);
+
+    return (
+        <div>
+            <button onClick={()=>{
+                refPixelStreaming.current.cls.initConnection({
+                                host: 'http://127.0.0.1',
+                                port: 80,
+                            })
+
+            }}>Connect</button>
+            <PixelStreaming
+                ref={refPixelStreaming}
+                onReady={(payload) => {
+                  // console.warn('ready', payload);
+                }}
+                onLoad={(payload) => {
+                    // console.warn('loaded', payload);
+                }}
+                onConnect={() => {
+                    // console.warn('connected');
+                }}
+                onRestart={() => {
+                    // console.warn('onRestart');
+                }}
+                onError={(payload) => {
+                    // console.error('error', payload);
+                }}
+                onClose={(payload) => {
+                    // console.error('closed', payload);
+                }}
+                onProgress={(payload) => {
+                    // console.warn('progress', payload);
+                }}
+                settings={{
+                    volume: 1,
+                    quality: 1,
+                    pixelStreaming: {
+                        warnTimeout: 120,
+                        closeTimeout: 10,
+                        lockMouse: false,
+                        fakeMouseWithTouches: false,
+                    }
+                }}
+            >
+            </PixelStreaming>
+        </div>
+    );
 }
-
-export default App;
