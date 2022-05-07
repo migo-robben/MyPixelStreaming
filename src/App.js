@@ -1,24 +1,33 @@
 import React from "react";
 
 // libs
-import PixelStreaming from 'pixel-streaming'
+import PixelStreaming, { usePS } from 'pixel-streaming'
 
+
+function Container() {
+    const PS = usePS()
+    return (
+        <div>
+            <button onClick={() => {
+
+                PS.cls.initConnection({
+                    host: 'http://127.0.0.1',
+                    port: 80,
+                })
+
+            }}>Connect</button>
+        </div>
+    )
+}
 export default function Player(props) {
     const refPixelStreaming = React.useRef(null);
 
     return (
         <div>
-            <button onClick={()=>{
-                refPixelStreaming.current.cls.initConnection({
-                                host: 'http://127.0.0.1',
-                                port: 80,
-                            })
-
-            }}>Connect</button>
             <PixelStreaming
                 ref={refPixelStreaming}
                 onReady={(payload) => {
-                  // console.warn('ready', payload);
+                    // console.warn('ready', payload);
                 }}
                 onLoad={(payload) => {
                     // console.warn('loaded', payload);
@@ -49,6 +58,9 @@ export default function Player(props) {
                     }
                 }}
             >
+                {() => (
+                    <Container />
+                )}
             </PixelStreaming>
         </div>
     );
